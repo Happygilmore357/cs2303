@@ -16,9 +16,9 @@ int main(void) {
   printf("Enter the x- and y-coordinates of point C:- ");
   scanf("%lf %lf", &Cx, &Cy);
 
-  lengthAB = sqrt(pow(Ax-Bx, 2) + pow(Ay-By, 2));
-  lengthBC = sqrt(pow(Bx-Cx, 2) + pow(By-Cy, 2));
-  lengthCA = sqrt(pow(Cx-Ax, 2) + pow(Cy-Ay, 2));
+  lengthAB = sqrt( (Ax-Bx)*(Ax-Bx) + (Ay-By)*(Ay-By) );
+  lengthBC = sqrt( (Bx-Cx)*(Bx-Cx) + (By-Cy)*(By-Cy) );
+  lengthCA = sqrt( (Cx-Ax)*(Cx-Ax) + (Cy-Ay)*(Cy-Ay) );
 
   printf("Length of AB is %.3f\n", lengthAB);
   printf("Length of BC is %.3f\n", lengthBC);
@@ -30,7 +30,7 @@ int main(void) {
 
   s = circumference/2;
 
-  area = sqrt(s*(s-lengthAB)*(s-lengthBC)*(s-lengthCA));
+  area = sqrt( s * (s-lengthAB) * (s-lengthBC) * (s-lengthCA) );
 
   printf("Area is %.3f\n", area);
 
