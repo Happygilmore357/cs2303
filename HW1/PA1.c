@@ -71,16 +71,41 @@ int main(void) {
 }
 
 void printCalendar(int year, int yearStartDay) {
-  printf("***    CALENDAR for %4d   ***", year);
+  printf("***    CALENDAR for %4d   ***\n\n", year);
   int monthStartDay = yearStartDay;
   for(int i=0; i<12; i++) {
-    int monthStartDay = printMonth(year, i, monthStartDay);
+    int nextMonthStartDay = printMonth(year, i, monthStartDay);
+    monthStartDay = nextMonthStartDay;
   }
 
 }
 
 int printMonth(int year, int month, int monthStartDay) {
-  int nextMonthStartDay = (printMonthName(year, month) + monthStartDay) % 7;
+  int monthLength = printMonthName(year, month);
+  int nextMonthStartDay = (monthLength + monthStartDay) % 7;
+
+  printf("Sun  Mon  Tue  Wed  Thu  Fri  Sat\n");
+
+  for(int i=0; i<monthStartDay; i++) {
+    printf("     ");
+  }
+
+  int dayOfTheWeek = monthStartDay;
+
+  for(int day=1; day<(monthLength+1); day++) {
+    if (dayOfTheWeek >= 6) {
+      printf("%3d  \n", day);
+      dayOfTheWeek = 0;
+    } else {
+      printf("%3d  ", day);
+      dayOfTheWeek += 1;
+    }
+  }
+  if (dayOfTheWeek == 0) {
+    printf("\n");
+  } else {
+    printf("\n\n");
+  }
 
   return nextMonthStartDay;
 }
@@ -91,55 +116,54 @@ int printMonthName(int year, int month) {
 
   switch (month) {
     case 0:
-      char monthName[] = "January";
+      printf("January %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 1:
-      char monthName[] = "February";
+      printf("February %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 2:
-      char monthName[] = "March";
+      printf("March %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 3:
-      char monthName[] = "April";
+      printf("April %d\n\n", year);
       lengthOfMonth = 30;
       break;
     case 4:
-      char monthName[] = "May";
+      printf("May %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 5:
-      char monthName[] = "June";
+      printf("June %d\n\n", year);
       lengthOfMonth = 30;
       break;
     case 6:
-      char monthName[] = "July";
+      printf("July %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 7:
-      char monthName[] = "August";
+      printf("August %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 8:
-      char monthName[] = "September";
+      printf("September %d\n\n", year);
       lengthOfMonth = 30;
       break;
     case 9:
-      char monthName[] = "October";
+      printf("October %d\n\n", year);
       lengthOfMonth = 31;
       break;
     case 10:
-      char monthName[] = "Novemebr";
+      printf("November %d\n\n", year);
       lengthOfMonth = 30;
       break;
     case 11:  default:
-      char monthName[] = "December";
+      printf("December %d\n\n", year);
       lengthOfMonth = 31;
       break;
   }
 
-  printf("%s %4d\n", monthName, year);
   return lengthOfMonth;
 }
