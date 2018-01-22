@@ -3,16 +3,17 @@
 #define DAY1YEAR1 (6)
 #define REFERENCE_YEAR (2000)
 
+// Sunday = 0, Saturday = 6
+// January 1st of 2000 was a Saturday
+
 void printCalendar(int year, int yearStartDay, int leapYear);
 int printMonth(int year, int month, int monthStartDay, int leapYear);
 int printMonthName(int year, int month, int leapYear);
 
 
-// Sunday = 0, Saturday = 6
-
 int main(void) {
 
-  // January 1st of 2000 was a Saturday
+
 
   //ask for year, figure out starting day of that year
 
@@ -28,7 +29,12 @@ int main(void) {
 
   } else if (year > REFERENCE_YEAR) {
     for (int indexYear = REFERENCE_YEAR; indexYear < year; indexYear++) {
-      if (indexYear % 4 != 0) {
+      if(indexYear % 4 == 0) {
+        if((indexYear%100!=0)||(indexYear%400==0)) {
+          daysBeforeYear+=366;
+        } else {daysBeforeYear+=365;}
+      } else {daysBeforeYear+=365;}
+      /*if (indexYear % 4 != 0) {
         daysBeforeYear += 365;  // This is true for most years, making the loop run faster
       } else if (indexYear % 100 == 0) {
         if (indexYear % 400 == 0) {
@@ -40,14 +46,19 @@ int main(void) {
       } else {
         //printf("Leap year: %d \n", indexYear);
         daysBeforeYear += 366;
-      }
+      }*/
     }
     yearStartDay = (daysBeforeYear + DAY1YEAR1) % 7;
 
   } else {
     for (int indexYear = REFERENCE_YEAR - 1; indexYear >= year; indexYear--) {
+      if(indexYear % 4 == 0) {
+        if((indexYear%100!=0)||(indexYear%400==0)) {
+          daysBeforeYear+=366;
+        } else {daysBeforeYear+=365;}
+      } else {daysBeforeYear+=365;}
       //printf("%d\n", indexYear);
-      if (indexYear % 4 != 0) {
+      /*if (indexYear % 4 != 0) {
         daysBeforeYear += 365;  // This is true for most years, making the loop run faster
       } else if (indexYear % 100 == 0) {
         if (indexYear % 400 == 0) {
@@ -59,7 +70,7 @@ int main(void) {
       } else {
         //printf("Leap year: %d \n", indexYear);
         daysBeforeYear += 366;
-      }
+      }*/
     }
     yearStartDay = 7 + (DAY1YEAR1 - daysBeforeYear) % 7;
   }
@@ -70,7 +81,6 @@ int main(void) {
     }
   }
 
-  printf("%d\n", leapYear);
 
   printCalendar(year, yearStartDay, leapYear);
 
@@ -85,9 +95,16 @@ void printCalendar(int year, int yearStartDay, int leapYear) {
     int nextMonthStartDay = printMonth(year, monthNumber, monthStartDay, leapYear);
     monthStartDay = nextMonthStartDay;
   }
-
 }
 
+/**
+* Prints one month of the year to the console
+* @param year year to print
+* @param monthNumber month to print (see numbering convention at top)
+* @param monthStartDay day of the week the curret month starts on
+* @param leapYear 1 if leap year, 0 if not leap year
+* @return nextMonthStartDay day of the week the next month starts on
+*/
 int printMonth(int year, int monthNumber, int monthStartDay, int leapYear) {
   int monthLength = printMonthName(year, monthNumber, leapYear);
   int nextMonthStartDay = (monthLength + monthStartDay) % 7;
@@ -118,11 +135,17 @@ int printMonth(int year, int monthNumber, int monthStartDay, int leapYear) {
   return nextMonthStartDay;
 }
 
-
-int printMonthName(int year, int month, int leapYear) {
+/**
+* Prints the month name with the year number at the top of the calendar. Also figures out the length of the month.
+* @param year year to print
+* @param month month to print (see numbering convention at top)
+* @param leapYear 1 if leap year, 0 if not leap year
+* @return lengthOfMonth length of current month
+*/
+int printMonthName(int year, int monthNumber, int leapYear) {
   int lengthOfMonth;
 
-  switch (month) {
+  switch (monthNumber) {
     case 0:
       printf("January %d\n\n", year);
       lengthOfMonth = 31;
