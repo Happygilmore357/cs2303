@@ -39,6 +39,7 @@ int main(void) {
     // Sets the indexing year to 2000, stops once indexing year reaces specifies year, inceases by 1 each time
     for (int indexYear = REFERENCE_YEAR; indexYear < year; indexYear++) {
       // LOOP INVARIANT: the index year must be less than the specified year at this point.
+      // This ensures it only counts years in between the refrence and target year
 
       // Determines if the index year is a leap year so it knows to add 365 or 366 days to daysBeforeYear
       // See readme for more detail
@@ -55,7 +56,8 @@ int main(void) {
 
     // Counts down from refence year to target year, adding the number of days in each year to daysBeforeYear each time
     for (int indexYear = REFERENCE_YEAR - 1; indexYear >= year; indexYear--) {
-      // LOOP INVARIANT: The inex year must always be >= to the target year, or else it would be counting the days before the target year
+      // LOOP INVARIANT: The inex year must always be >= to the target year
+      // This ensures it only counts years in between the refrence and target year
 
       // Determines if the index year is a leap year so it knows to add 365 or 366 days to daysBeforeYear
       // See readme for more detail
@@ -117,7 +119,8 @@ int printMonth(int year, int monthNumber, int monthStartDay, int leapYear) {
   // Prints blank spaces in the week to compensate for not starting on a Sunday
   // Initialzies i to 0, increments by 1 until it reaches the start day of the current month
   for(int i = 0; i < monthStartDay; i++) {
-    // LOOP INVARIANT: i must be less than the month start day. This ensures it prints the correct number of blank spaces
+    // LOOP INVARIANT: i must be less than the month start day.
+    //This ensures it prints the correct number of blank spaces before the first day of the month
     printf("     ");
   }
 
