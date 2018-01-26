@@ -35,12 +35,52 @@ int** make2Dint(int rows, int columns) {
 	return a;
 }
 
-/**
- * You need to fill in this function and header comment.
+/** Make a 2D array of chars
+ *
+ * @param rows Number of rows
+ * @param columns Number of columns
+ * @return Pointer to the array of pointers to the rows.
+ * 	  or null pointer if unable to allocate memory.
+ * 	  Note: Will not free partially-allocated memory.
+ *
+ * @author Mike Ciaraldi
  */
 char** make2Dchar(int rows, int columns) {
 
 	char **a; // Array of pointers to rows
-	a = (char**) NULL; // Replace this...
+	unsigned int i; // Loop counter
+
+	// First allocate the array of pointers to rows
+	a = (char **) malloc(rows * sizeof(char *));
+	if (!a) { // Unable to allocate the array
+		return (char **) NULL;
+	}
+
+	// Now allocate array for each row
+	for (i = 0; i < rows; i++) {
+		// i is the row we are about to allocate
+		a[i] = malloc(columns * sizeof (char));
+		if (!a[i]) {
+			return (char **) NULL; // Unable to allocate
+		}
+	}
 	return a;
 }
+
+/** Compare 2 2D arrays of chars
+ *
+ * @param arr1 Pointer to first array
+ * @param arr2 Pointer to second array
+ * @param rows Number of rows
+ * @param columns Number of columns
+ * @return 1 if arrays are identical, 0 if they are different
+ */
+int compare2Dchar(char **arr1, char **arr2, int rows, int columns) {
+
+
+
+	return 0;
+}
+
+
+

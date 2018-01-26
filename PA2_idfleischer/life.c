@@ -1,7 +1,8 @@
 /* Game of Life
  * FILE: life.c
- * WRITTEN BY: Isaiah Fleischer
-*/
+ * TEMPLATE WRITTEN BY: Mike Ciaraldi
+ * MODIFIED BY: Isaiah Fleischer
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,24 +36,38 @@ int main(int argc, char **argv) {
 	}
 
 	/* Save the command-line arguments.
-	   Also need to check if print and/or pause arguments were entered,
-	   and if so, what they were.
-	   A switch statement might be handy here.
-	*/
-	rows = atoi(argv[1]); // Convert from character string to integer.
-	columns = atoi(argv[2]);
-	gens = atoi(argv[3]);
-	inputFileName = argv[4];
+	 Also need to check if print and/or pause arguments were entered,
+	 and if so, what they were.
+	 A switch statement might be handy here.
+	 */
 
+	switch (argc) {
+	case 7:
+		doPause = atoi(argv[6]); // Convert from character string to integer. // Should be n if no print or left out
+	case 6:
+		doPrint = atoi(argv[5]); // should be n if left out
+	case 5:
+	default:
+		inputFileName = argv[4];
+		gens = atoi(argv[3]);
+		columns = atoi(argv[2]);
+		rows = atoi(argv[1]);
+		break;
+
+	}
 
 	/* Here is how you would allocate an array to hold the grid.
-	*/
+	 */
 	gridA = make2Dchar(rows, columns);
+	if (!gridA) {
+		printf("malloc() failed when creating GridA");
+		return 1;
+	}
+
 	// You should check that it succeeded.
 
-
 	/* Eventually, need to try to open the input file.
-	*/
+	 */
 	input = fopen(inputFileName, "r");
 	if (!input) {
 		printf("Unable to open input file: %s\n", inputFileName);
@@ -62,7 +77,7 @@ int main(int argc, char **argv) {
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().
 	 * You can read from standard input (the keyboard) with getchar().
-	*/
+	 */
 
 	return EXIT_SUCCESS;
 }
