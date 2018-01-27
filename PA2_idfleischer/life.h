@@ -5,11 +5,10 @@
  *      Author: isaiah
  */
 
-
 #ifndef LIFE_H_
 #define LIFE_H_
 
-int PlayOne(unsigned int rows, unsigned int columns, int **Old, int **New);
+int playOne(unsigned int rows, unsigned int columns, int **Old, int **New);
 
 
 

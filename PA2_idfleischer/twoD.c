@@ -27,7 +27,7 @@ int** make2Dint(int rows, int columns) {
 	// Now allocate array for each row
 	for (i = 0; i < rows; i++) {
 		// i is the row we are about to allocate
-		a[i] = malloc(columns * sizeof (int));
+		a[i] = malloc(columns * sizeof(int));
 		if (!a[i]) {
 			return (int **) NULL; // Unable to allocate
 		}
@@ -35,7 +35,7 @@ int** make2Dint(int rows, int columns) {
 	return a;
 }
 
-/** Make a 2D array of chars
+/** Make a 2D array of ints
  *
  * @param rows Number of rows
  * @param columns Number of columns
@@ -59,7 +59,7 @@ char** make2Dchar(int rows, int columns) {
 	// Now allocate array for each row
 	for (i = 0; i < rows; i++) {
 		// i is the row we are about to allocate
-		a[i] = malloc(columns * sizeof (char));
+		a[i] = malloc(columns * sizeof(char));
 		if (!a[i]) {
 			return (char **) NULL; // Unable to allocate
 		}
@@ -73,14 +73,54 @@ char** make2Dchar(int rows, int columns) {
  * @param arr2 Pointer to second array
  * @param rows Number of rows
  * @param columns Number of columns
- * @return 1 if arrays are identical, 0 if they are different
+ * @return 0 if arrays are identical, 1 if they are different
  */
-int compare2Dchar(char **arr1, char **arr2, int rows, int columns) {
+int compare2Dchar(char **arr1, char **arr2, unsigned int rows, unsigned int columns) {
 
+	if (!arr1) {
+		printf("Invalid pointer to first array");
+		return 1;
+	}
+	if (!arr2) {
+		printf("Invalid pointer to second array");
+		return 1;
+	}
 
+	for (int row = 0; row < rows; row++) {
+		for (int column = 0; column < columns; column++) {
+			if (arr1[row][column] != arr2[row][column]) {
+				printf("Arrays different at [%d, %d]\n", row, column);
+				return 1;
+			}
+		}
+		//printf("\n");
+	}
 
 	return 0;
 }
 
+/** Print a 2D array of chars
+ *
+ * @param arr Pointer to array
+ * @param rows Number of rows
+ * @param columns Number of columns
+ * @return 0 if success, 1 if invalid pointer
+ */
+int print2Dchar(char **arr, unsigned int rows, unsigned int columns) {
 
+	if (!arr) {
+		printf("Failed to open array for printing");
+		return 1;
+	}
+
+	for (int row = 0; row < rows; row++) {
+		for (int column = 0; column < columns; column++) {
+			printf("%c [%d, %d]", arr[row][column], row, column);
+		}
+		printf("\n");
+	}
+	printf("Finished printing\n");
+
+	return 0;
+}
 

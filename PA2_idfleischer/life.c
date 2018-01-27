@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "life.h"
 #include "twoD.h"
 
 /** Main function.
@@ -26,6 +27,8 @@ int main(int argc, char **argv) {
 	int doPrint; // 1 if user wants to print each generation, 0 if not
 	int doPause; // 1 if user wants to pause after each generation, 0 if not
 	char **gridA; // A 2D array to hold the pattern
+	char **gridB; // A 2D array to hold the pattern
+	char **gridC; // A 2D array to hold the pattern
 
 	// See if there are the right number of arguments on the command line
 	if ((argc < 5) || (argc > 7)) {
@@ -63,6 +66,17 @@ int main(int argc, char **argv) {
 		printf("malloc() failed when creating GridA");
 		return 1;
 	}
+	gridB = make2Dchar(rows, columns);
+	if (!gridB) {
+		printf("malloc() failed when creating GridB");
+		return 1;
+	}
+	gridC = make2Dchar(rows, columns);
+	if (!gridC) {
+		printf("malloc() failed when creating GridC");
+		return 1;
+	}
+
 
 	// You should check that it succeeded.
 
@@ -73,6 +87,17 @@ int main(int argc, char **argv) {
 		printf("Unable to open input file: %s\n", inputFileName);
 		return EXIT_FAILURE;
 	}
+
+
+	print2Dchar(gridA, rows, columns);
+	printf("Printed Grid A\n");
+
+	int compare = compare2Dchar(gridA, gridB, rows, columns);
+	if(compare)
+		printf("Compared arrays\n");
+	else
+		printf("different arrays\n");
+
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().
