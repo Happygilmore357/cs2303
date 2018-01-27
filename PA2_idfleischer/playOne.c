@@ -14,9 +14,9 @@
  * @param columns Number of columns
  * @param old Board from previous turn
  * @param new New board
- * @return 1 if the game has repeated itself.
- * 	  in the past 2 turns. 0 if board hasn't.
- * 	  repeated itself.
+ * @return 1 if the game has repeated itself
+ * 		in the past 2 turns. 0 if board hasn't
+ * 	  	repeated itself.
  */
 int playOne(unsigned int rows, unsigned int columns, int **Old, int **New) {
 

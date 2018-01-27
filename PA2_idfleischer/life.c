@@ -77,7 +77,6 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-
 	// You should check that it succeeded.
 
 	/* Eventually, need to try to open the input file.
@@ -86,18 +85,20 @@ int main(int argc, char **argv) {
 	if (!input) {
 		printf("Unable to open input file: %s\n", inputFileName);
 		return EXIT_FAILURE;
+	} else {
+		for (int line = 0; line < rows; line++) {
+			fgets((gridA[line]), columns, input);
+		}
 	}
-
 
 	print2Dchar(gridA, rows, columns);
 	printf("Printed Grid A\n");
 
 	int compare = compare2Dchar(gridA, gridB, rows, columns);
-	if(compare)
+	if (compare)
 		printf("Compared arrays\n");
 	else
 		printf("different arrays\n");
-
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().

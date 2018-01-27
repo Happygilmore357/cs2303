@@ -39,7 +39,7 @@ int** make2Dint(int rows, int columns) {
  *
  * @param rows Number of rows
  * @param columns Number of columns
- * @return Pointer to the array of pointers to the rows.
+ * @return Pointer to the array of pointers to the rows
  * 	  or null pointer if unable to allocate memory.
  * 	  Note: Will not free partially-allocated memory.
  *
@@ -109,13 +109,13 @@ int compare2Dchar(char **arr1, char **arr2, unsigned int rows, unsigned int colu
 int print2Dchar(char **arr, unsigned int rows, unsigned int columns) {
 
 	if (!arr) {
-		printf("Failed to open array for printing");
+		printf("Invalid pointer to array for printing");
 		return 1;
 	}
 
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
-			printf("%c [%d, %d]", arr[row][column], row, column);
+			printf("%c", arr[row][column]); //][%d, %d]", arr[row][column], row, column);
 		}
 		printf("\n");
 	}
