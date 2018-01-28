@@ -86,8 +86,21 @@ int main(int argc, char **argv) {
 	 fgets((gridA[line]), columns, input);
 	 }
 	 }*/
+	//int maxRow, maxColumn;
+	int *maxRow = (int *) malloc(sizeof(int *));
+	int *maxColumn = (int *) malloc(sizeof(int *));// = &maxRow; // Pointer to maximum height of input file
+	//int *maxcolumn = &maxColumn; // Pointer to maximum width of input file
 
+	int returnVal;
+	returnVal = verifyFileSize(input, rows, columns, maxRow, maxColumn);
+	printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn, returnVal);
 
+	int rowOffset = (rows-*maxRow)/2;
+	int columnOffset = (columns-*maxColumn)/2;
+	printf("Offsets: %d, %d\n", rowOffset, columnOffset);
+	initGrid(gridA, boardSizeRows, boardSizeColumns);
+	returnVal = parseFile(input, gridA, boardSizeRows, boardSizeColumns, rowOffset, columnOffset,  maxRow);
+	print2Dint(gridA, boardSizeRows, boardSizeColumns);
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().

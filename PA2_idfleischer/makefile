@@ -6,7 +6,7 @@ all: life
 
 # Rule for building the executable.
 life: life.o twoD.o playOne.o readFile.o
-	gcc $(CFLAGS) life.o twoD.o playOne.o -o life
+	gcc $(CFLAGS) life.o twoD.o playOne.o readFile.o -o life
 
 # Rules for building each object file.
 life.o: life.c life.h twoD.h
