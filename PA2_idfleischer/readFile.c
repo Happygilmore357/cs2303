@@ -56,7 +56,7 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
 
 	}
 	*maxRow = currentRow;
-	printf("\n");
+	//printf("\n");
 
 	if (*maxRow > givenRows || *maxColumn > givenColumns) {
 		return 1;

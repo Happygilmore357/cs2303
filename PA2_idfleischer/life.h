@@ -8,7 +8,8 @@
 #ifndef LIFE_H_
 #define LIFE_H_
 
-int playOne(int rows, int columns, int **superOld, int **old, int **new);
+void playOne(int **old, int **new, int rows, int columns);
+int checkAllDead(int **arr, int rows, int columns);
 
 int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow, int *maxColumn);
 int parseFile(FILE *input, int **firstGrid, int rowOffset, int columnOffset);

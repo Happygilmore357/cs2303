@@ -28,9 +28,9 @@ int main(int argc, char **argv) {
 	int gens; // Number of generations to produce
 	int doPrint; // 1 if user wants to print each generation, 0 if not
 	int doPause; // 1 if user wants to pause after each generation, 0 if not
-	int **gridA; // A 2D array to hold the pattern
-	int **gridB; // A 2D array to hold the pattern
-	int **gridC; // A 2D array to hold the pattern
+	int **new; // A 2D array to hold the pattern
+	int **old; // A 2D array to hold the pattern
+	int **superOld; // A 2D array to hold the pattern
 
 	// See if there are the right number of arguments on the command line
 	if ((argc < 5) || (argc > 7)) {
@@ -60,20 +60,25 @@ int main(int argc, char **argv) {
 
 	}
 
+	if (gens <= 0) {
+		printf("Number of generations must be greater than 0");
+		return 1;
+	}
+
 	// Allocate memory to hold 3 grids, checking to make sure each succeeded
-	gridA = make2Dint(boardSizeRows, boardSizeColumns);
-	if (!gridA) {
-		printf("malloc() failed when creating GridA");
+	new = make2Dint(boardSizeRows, boardSizeColumns);
+	if (!new) {
+		printf("malloc() failed when creating new");
 		return 1;
 	}
-	gridB = make2Dint(boardSizeRows, boardSizeColumns);
-	if (!gridB) {
-		printf("malloc() failed when creating GridB");
+	old = make2Dint(boardSizeRows, boardSizeColumns);
+	if (!old) {
+		printf("malloc() failed when creating old");
 		return 1;
 	}
-	gridC = make2Dint(boardSizeRows, boardSizeColumns);
-	if (!gridC) {
-		printf("malloc() failed when creating GridC");
+	superOld = make2Dint(boardSizeRows, boardSizeColumns);
+	if (!superOld) {
+		printf("malloc() failed when creating superOld");
 		return 1;
 	}
 
@@ -81,26 +86,26 @@ int main(int argc, char **argv) {
 	if (!input) {
 		printf("Unable to open input file: %s\n", inputFileName);
 		return EXIT_FAILURE;
-	} /*else {
-	 for (int line = 0; line < rows; line++) {
-	 fgets((gridA[line]), columns, input);
-	 }
-	 }*/
-	//int maxRow, maxColumn;
+	}
+
 	int *maxRow = (int *) malloc(sizeof(int *));
-	int *maxColumn = (int *) malloc(sizeof(int *));// = &maxRow; // Pointer to maximum height of input file
-	//int *maxcolumn = &maxColumn; // Pointer to maximum width of input file
+	int *maxColumn = (int *) malloc(sizeof(int *));
 
 	int returnVal;
 	returnVal = verifyFileSize(input, rows, columns, maxRow, maxColumn);
 	printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn, returnVal);
-	if(returnVal)
+	if(returnVal) {
+		printf("File size is larger than grid defined in program arguments");
 		return 1;
+	}
 
 	int rowOffset = (rows-*maxRow)/2;
 	int columnOffset = (columns-*maxColumn)/2;
-	printf("Offsets: %d, %d\n", rowOffset, columnOffset);
-	initGrid(gridA, boardSizeRows, boardSizeColumns);
+	//printf("Offsets: %d, %d\n", rowOffset, columnOffset);
+	initGrid(new, boardSizeRows, boardSizeColumns);
+	initGrid(old, boardSizeRows, boardSizeColumns);
+	initGrid(superOld, boardSizeRows, boardSizeColumns);
+
 
 	input = fopen(inputFileName, "r");
 	if (!input) {
@@ -108,14 +113,29 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	returnVal = parseFile(input, gridA, rowOffset, columnOffset);
-	print2Dint(gridA, boardSizeRows, boardSizeColumns);
+	returnVal = parseFile(input, new, rowOffset, columnOffset);
+	print2Dint(new, boardSizeRows, boardSizeColumns);
+	playOne(new, old, rows, columns);
+	print2Dint(old, boardSizeRows, boardSizeColumns);
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().
 	 * You can read from standard input (the keyboard) with getchar().
 	 */
 
+
+	for (int gen = 0; gen > gens; gen++) {
+		if (checkAllDead(new, rows, columns)) {
+			printf("Game ended in %d Generations", gen);
+			return 1;
+		}
+
+
+	}
+
+	free(new);
+	free(old);
+	free(superOld);
 
 	return EXIT_SUCCESS;
 }
