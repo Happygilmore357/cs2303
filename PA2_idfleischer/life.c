@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	returnVal = parseFile(input, gridA, rowOffset, columnOffset,  maxRow);
+	returnVal = parseFile(input, gridA, rowOffset, columnOffset);
 	print2Dint(gridA, boardSizeRows, boardSizeColumns);
 
 	/*Once opened, you can read from the file one character at a time with fgetc().

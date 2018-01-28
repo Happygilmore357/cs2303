@@ -44,10 +44,10 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
 		} else if (tempChar == '\n') {
 			if (currentColumn > *maxColumn) {
 				*maxColumn = currentColumn;
-				currentColumn = 0;
-				currentRow++;
-				printf("%c", tempChar);
 			}
+			currentColumn = 0;
+			currentRow++;
+			printf("%c", tempChar);
 		} else {
 			printf("Weird type: %c", tempChar);
 		}
@@ -55,7 +55,7 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
 		tempChar = fgetc(input);
 
 	}
-	*maxRow = currentRow + 1;
+	*maxRow = currentRow;
 	printf("\n");
 
 	if (*maxRow > givenRows || *maxColumn > givenColumns) {
@@ -65,18 +65,18 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
 	return 0;
 }
 
-
 /** Parses input file to generate initial game board
  *
  * @param input Stream for input file
+ * @param firstGrid Grid to place first generation
  * @param rowOffset Offset to center input data vertically
  * @param columnOffset Offset to center input data horizontally
  *
  * @return 0 if successful, 1 if failed.
  */
-int parseFile(FILE *input, int **firstGrid, int rowOffset, int columnOffset, int *maxRow) {
+int parseFile(FILE *input, int **firstGrid, int rowOffset, int columnOffset) {
 
-	char tempChar = fgetc(input);
+	char tempChar = fgetc(input); // Get the first char in input file
 
 	while (tempChar == ' ' || tempChar == '\n')
 		tempChar = fgetc(input);
@@ -102,7 +102,6 @@ int parseFile(FILE *input, int **firstGrid, int rowOffset, int columnOffset, int
 
 		tempChar = fgetc(input);
 	}
-
 
 	return 0;
 }
