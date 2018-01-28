@@ -65,9 +65,6 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
 	return 0;
 }
 
-// Func to read in file char by char, ignoring ' ', '\0', and moving to next row at '\n'
-// replaces x with 1 and O with 0
-// this way can add up neighbors to see if live or die
 
 /** Parses input file to generate initial game board
  *
@@ -77,25 +74,33 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
  *
  * @return 0 if successful, 1 if failed.
  */
-int parseFile(FILE *input, int **firstGrid, int boardSizeRows, int boardSizeColumns, int rowOffset, int columnOffset, int *maxRow) {
+int parseFile(FILE *input, int **firstGrid, int rowOffset, int columnOffset, int *maxRow) {
 
 	char tempChar = fgetc(input);
+
+	while (tempChar == ' ' || tempChar == '\n')
+		tempChar = fgetc(input);
+
 	int equivInt = 0;
-	printf("%d\n", rowOffset+1);
-	for (int row = (rowOffset + 1); (row < boardSizeRows - 1) || (row < *maxRow); row++) {
-		printf("Row: %d", row);
-		for (int column = columnOffset + 1; (column < boardSizeColumns - 1) || (tempChar == '\n'); column++) {
-			if (tempChar == EOF)
-				return 0;
-			else if (tempChar == 'x' || tempChar == 'X')
-				equivInt = 1;
-			else
-				equivInt = 0;
-			printf("char: %c, int: %d", tempChar, equivInt);
+
+	int row = rowOffset + 1;
+	int column = columnOffset + 1;
+
+	while (tempChar != EOF) {
+		if (tempChar == 'x' || tempChar == 'X') {
+			equivInt = 1;
 			firstGrid[row][column] = equivInt;
-			tempChar = fgetc(input);
+			column++;
+		} else if (tempChar == 'o' || tempChar == 'O') {
+			equivInt = 0;
+			firstGrid[row][column] = equivInt;
+			column++;
+		} else if (tempChar == '\n') {
+			row++;
+			column = columnOffset + 1;
 		}
 
+		tempChar = fgetc(input);
 	}
 
 

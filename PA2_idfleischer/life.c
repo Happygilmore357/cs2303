@@ -94,12 +94,21 @@ int main(int argc, char **argv) {
 	int returnVal;
 	returnVal = verifyFileSize(input, rows, columns, maxRow, maxColumn);
 	printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn, returnVal);
+	if(returnVal)
+		return 1;
 
 	int rowOffset = (rows-*maxRow)/2;
 	int columnOffset = (columns-*maxColumn)/2;
 	printf("Offsets: %d, %d\n", rowOffset, columnOffset);
 	initGrid(gridA, boardSizeRows, boardSizeColumns);
-	returnVal = parseFile(input, gridA, boardSizeRows, boardSizeColumns, rowOffset, columnOffset,  maxRow);
+
+	input = fopen(inputFileName, "r");
+	if (!input) {
+		printf("Unable to open input file: %s\n", inputFileName);
+		return EXIT_FAILURE;
+	}
+
+	returnVal = parseFile(input, gridA, rowOffset, columnOffset,  maxRow);
 	print2Dint(gridA, boardSizeRows, boardSizeColumns);
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
