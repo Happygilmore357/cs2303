@@ -5,7 +5,7 @@ CFLAGS = -Wall -g
 all: life
 
 # Rule for building the executable.
-life: life.o twoD.o playOne.o
+life: life.o twoD.o playOne.o readFile.o
 	gcc $(CFLAGS) life.o twoD.o playOne.o -o life
 
 # Rules for building each object file.
@@ -17,6 +17,9 @@ twoD.o: twoD.c twoD.h
 	
 playOne.o: playOne.c life.h
 	gcc $(CFLAGS) -c playOne.c
+	
+readFile.o: readFile.c life.h
+	gcc $(CFLAGS) -c readFile.c
 
 # Give command "make clean" to remove object files,
 #  executable, and documentation.

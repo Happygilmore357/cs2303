@@ -23,12 +23,14 @@ int main(int argc, char **argv) {
 	FILE *input; // Stream descriptor for file containing initial grid
 	int rows; // Number of rows in the grid
 	int columns; // Number of columns in the grid
+	int boardSizeRows; // Number of rows on board (includes walls)
+	int boardSizeColumns; // Number of columns on board (includes walls)
 	int gens; // Number of generations to produce
 	int doPrint; // 1 if user wants to print each generation, 0 if not
 	int doPause; // 1 if user wants to pause after each generation, 0 if not
-	char **gridA; // A 2D array to hold the pattern
-	char **gridB; // A 2D array to hold the pattern
-	char **gridC; // A 2D array to hold the pattern
+	int **gridA; // A 2D array to hold the pattern
+	int **gridB; // A 2D array to hold the pattern
+	int **gridC; // A 2D array to hold the pattern
 
 	// See if there are the right number of arguments on the command line
 	if ((argc < 5) || (argc > 7)) {
@@ -38,12 +40,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	/* Save the command-line arguments.
-	 Also need to check if print and/or pause arguments were entered,
-	 and if so, what they were.
-	 A switch statement might be handy here.
-	 */
-
+	// Save command line arguments
 	switch (argc) {
 	case 7:
 		doPause = atoi(argv[6]); // Convert from character string to integer. // Should be n if no print or left out
@@ -55,55 +52,48 @@ int main(int argc, char **argv) {
 		gens = atoi(argv[3]);
 		columns = atoi(argv[2]);
 		rows = atoi(argv[1]);
+
+		// Board size is playable area + walls on either size
+		boardSizeRows = rows + 2;
+		boardSizeColumns = columns + 2;
 		break;
 
 	}
 
-	/* Here is how you would allocate an array to hold the grid.
-	 */
-	gridA = make2Dchar(rows, columns);
+	// Allocate memory to hold 3 grids, checking to make sure each succeeded
+	gridA = make2Dint(boardSizeRows, boardSizeColumns);
 	if (!gridA) {
 		printf("malloc() failed when creating GridA");
 		return 1;
 	}
-	gridB = make2Dchar(rows, columns);
+	gridB = make2Dint(boardSizeRows, boardSizeColumns);
 	if (!gridB) {
 		printf("malloc() failed when creating GridB");
 		return 1;
 	}
-	gridC = make2Dchar(rows, columns);
+	gridC = make2Dint(boardSizeRows, boardSizeColumns);
 	if (!gridC) {
 		printf("malloc() failed when creating GridC");
 		return 1;
 	}
 
-	// You should check that it succeeded.
-
-	/* Eventually, need to try to open the input file.
-	 */
 	input = fopen(inputFileName, "r");
 	if (!input) {
 		printf("Unable to open input file: %s\n", inputFileName);
 		return EXIT_FAILURE;
-	} else {
-		for (int line = 0; line < rows; line++) {
-			fgets((gridA[line]), columns, input);
-		}
-	}
+	} /*else {
+	 for (int line = 0; line < rows; line++) {
+	 fgets((gridA[line]), columns, input);
+	 }
+	 }*/
 
-	print2Dchar(gridA, rows, columns);
-	printf("Printed Grid A\n");
 
-	int compare = compare2Dchar(gridA, gridB, rows, columns);
-	if (compare)
-		printf("Compared arrays\n");
-	else
-		printf("different arrays\n");
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().
 	 * You can read from standard input (the keyboard) with getchar().
 	 */
+
 
 	return EXIT_SUCCESS;
 }

@@ -67,15 +67,15 @@ char** make2Dchar(int rows, int columns) {
 	return a;
 }
 
-/** Compare 2 2D arrays of chars
+/** Compare 2 2D arrays of ints
  *
  * @param arr1 Pointer to first array
  * @param arr2 Pointer to second array
  * @param rows Number of rows
  * @param columns Number of columns
- * @return 0 if arrays are identical, 1 if they are different
+ * @return 0 if arrays are identical, 1 if they are different.
  */
-int compare2Dchar(char **arr1, char **arr2, unsigned int rows, unsigned int columns) {
+int compare2Dint(int **arr1, int **arr2, int rows, int columns) {
 
 	if (!arr1) {
 		printf("Invalid pointer to first array");
@@ -99,14 +99,14 @@ int compare2Dchar(char **arr1, char **arr2, unsigned int rows, unsigned int colu
 	return 0;
 }
 
-/** Print a 2D array of chars
+/** Print a 2D array of ints
  *
  * @param arr Pointer to array
  * @param rows Number of rows
  * @param columns Number of columns
- * @return 0 if success, 1 if invalid pointer
+ * @return 0 if success, 1 if invalid pointer.
  */
-int print2Dchar(char **arr, unsigned int rows, unsigned int columns) {
+int print2Dint(int **arr, int rows, int columns) {
 
 	if (!arr) {
 		printf("Invalid pointer to array for printing");
@@ -115,12 +115,37 @@ int print2Dchar(char **arr, unsigned int rows, unsigned int columns) {
 
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
-			printf("%c", arr[row][column]); //][%d, %d]", arr[row][column], row, column);
+			printf("%d", arr[row][column]); //][%d, %d]", arr[row][column], row, column);
 		}
 		printf("\n");
 	}
 	printf("Finished printing\n");
 
 	return 0;
+}
+
+/** Initialize grid to be all 0's
+ *
+ * @param arr Pointer to array
+ * @param rows Number of rows
+ * @param columns Number of columns
+ * @return 0 if success, 1 if invalid pointer.
+ */
+int initGrid(int **arr, int rows, int columns) {
+
+	if (!arr) {
+		printf("Invalid pointer to array for printing");
+		return 1;
+	}
+
+	for (int row = 0; row < rows; row++) {
+		for (int column = 0; column < columns; column++) {
+			arr[row][column] = 0;
+		}
+	}
+	printf("Finished grid init\n");
+
+	return 0;
+
 }
 

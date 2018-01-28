@@ -8,7 +8,10 @@
 #ifndef LIFE_H_
 #define LIFE_H_
 
-int playOne(unsigned int rows, unsigned int columns, int **Old, int **New);
+int playOne(int rows, int columns, int **superOld, int **old, int **new);
+
+int verifyFileSize(FILE *input, int givenRows, int givenColumns);
+int parseFile(FILE *input);
 
 
 
