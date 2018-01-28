@@ -89,7 +89,7 @@ int compare2Dint(int **arr1, int **arr2, int rows, int columns) {
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
 			if (arr1[row][column] != arr2[row][column]) {
-				printf("Arrays different at [%d, %d]\n", row, column);
+				//printf("Arrays different at [%d, %d]\n", row, column);
 				return 1;
 			}
 		}

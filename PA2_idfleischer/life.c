@@ -93,19 +93,19 @@ int main(int argc, char **argv) {
 
 	int returnVal;
 	returnVal = verifyFileSize(input, rows, columns, maxRow, maxColumn);
-	printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn, returnVal);
-	if(returnVal) {
+	printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn,
+			returnVal);
+	if (returnVal) {
 		printf("File size is larger than grid defined in program arguments");
 		return 1;
 	}
 
-	int rowOffset = (rows-*maxRow)/2;
-	int columnOffset = (columns-*maxColumn)/2;
+	int rowOffset = (rows - *maxRow) / 2;
+	int columnOffset = (columns - *maxColumn) / 2;
 	//printf("Offsets: %d, %d\n", rowOffset, columnOffset);
 	initGrid(new, boardSizeRows, boardSizeColumns);
 	initGrid(old, boardSizeRows, boardSizeColumns);
 	initGrid(superOld, boardSizeRows, boardSizeColumns);
-
 
 	input = fopen(inputFileName, "r");
 	if (!input) {
@@ -114,24 +114,52 @@ int main(int argc, char **argv) {
 	}
 
 	returnVal = parseFile(input, new, rowOffset, columnOffset);
-	print2Dint(new, boardSizeRows, boardSizeColumns);
-	playOne(new, old, rows, columns);
-	print2Dint(old, boardSizeRows, boardSizeColumns);
+	print2Dint(new, rows, columns);
+	//playOne(new, old, rows, columns);
+	//print2Dint(old, boardSizeRows, boardSizeColumns);
 
 	/*Once opened, you can read from the file one character at a time with fgetc().
 	 * You can read one line at a time using fgets().
 	 * You can read from standard input (the keyboard) with getchar().
 	 */
 
+	if (checkAllDead(new, rows, columns)) {
+		printf("Game ended because all organisms were dead in initial state.");
+		return 1;
+	}
 
-	for (int gen = 0; gen > gens; gen++) {
+	for (int gen = 1; gen <= gens; gen++) {
+
+		printf("Gen: %d\n", gen);
+		superOld = old;
+		old = new;
+		new = superOld;
+
+		playOne(old, new, rows, columns);
+
+		print2Dint(new, rows, columns);
+
 		if (checkAllDead(new, rows, columns)) {
-			printf("Game ended in %d Generations", gen);
+			printf("Game ended in %d generation(s) because all organisms died.",
+					gen);
+			return 1;
+
+		} else if (!compare2Dint(new, old, rows, columns)) {
+			printf(
+					"Game ended in %d generation(s) because it reached a steady state.\n",
+					gen);
+			return 1;
+
+		} else if (!compare2Dint(new, superOld, rows, columns)) {
+			printf(
+					"Game ended in %d generation(s) because it reached an oscillatory state.\n",
+					gen);
 			return 1;
 		}
-
-
 	}
+
+	printf("Game ended in %d generation(s)\n", gens);
+	return 1;
 
 	free(new);
 	free(old);

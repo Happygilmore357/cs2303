@@ -19,7 +19,7 @@
  * 		in the past 2 turns. 0 if board hasn't
  * 	  	repeated itself.
  */
-void playOne(int **old, int **new, int columns, int rows) {
+void playOne(int **old, int **new, int rows, int columns) {
 
 	int score; // Number of neighbor organisms alive
 	int orgState; // State of current organism, 1 = alive, 0 = dead
@@ -42,15 +42,20 @@ void playOne(int **old, int **new, int columns, int rows) {
 			score += old[row][column - 1];
 			score += old[row][column + 1];
 
+
 			switch (score) {
 			case 3:
 				if (orgState == 0) {
 					new[row][column] = 1;
+					//printf("State: %d Coords: %d, %d Score: %d, New State: Alive\n", orgState, row, column, score);
 					break;
 				}
 			case 2:
-				new[row][column] = 1;
+				if (orgState == 1) {
+					new[row][column] = 1;
+				//printf("State: %d Coords: %d, %d Score: %d, New State: Alive\n", orgState, row, column, score);
 				break;
+				}
 			case 0:
 			case 1:
 			case 4:
@@ -60,6 +65,8 @@ void playOne(int **old, int **new, int columns, int rows) {
 			case 8:
 			default:
 				new[row][column] = 0;
+				//sprintf("State: %d Coords: %d, %d Score: %d, New State: Dead\n", orgState, row, column, score);
+				break;
 			}
 
 		}
