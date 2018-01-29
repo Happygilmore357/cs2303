@@ -150,6 +150,13 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
+	printf("new\n");
+	print2Dint(new, rows, columns);
+	printf("old\n");
+	print2Dint(old, rows, columns);
+	printf("superold\n");
+	print2Dint(superOld, rows, columns);
+
 	for (int gen = 1; gen <= gens; gen++) {
 
 		if (doPause) {
@@ -172,11 +179,9 @@ int main(int argc, char **argv) {
 			print2Dint(new, rows, columns);
 			printf("\n");
 		}
-		//print2Dint(old, rows, columns);
-		//print2Dint(superOld, rows, columns);
 
 		if (checkAllDead(new, rows, columns)) {
-			printf("Game ended in %d generation(s) because all organisms died.",
+			printf("Game ended in %d generation(s) because all organisms died.\n",
 					gen);
 			return 1;
 
@@ -194,10 +199,12 @@ int main(int argc, char **argv) {
 			return 1;
 		}
 
+		//Shuffle the pointers so each board gets moved back a stage and "new" gets the oldest board
+		int **tempArr;
+		tempArr = superOld;
 		superOld = old;
 		old = new;
-		new = superOld;
-
+		new = tempArr;
 	}
 
 	printf("Game ended in %d generation(s)\n", gens);
