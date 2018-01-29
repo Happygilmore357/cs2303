@@ -40,14 +40,14 @@ int verifyFileSize(FILE *input, int givenRows, int givenColumns, int *maxRow,
 				|| tempChar == 'X') {
 			currentColumn++;
 			//printf("%d", tempChar == 'x');
-			printf("%c", tempChar);
+			//printf("%c", tempChar);
 		} else if (tempChar == '\n') {
 			if (currentColumn > *maxColumn) {
 				*maxColumn = currentColumn;
 			}
 			currentColumn = 0;
 			currentRow++;
-			printf("%c", tempChar);
+			//printf("%c", tempChar);
 		} else {
 			printf("Weird type: %c", tempChar);
 		}

@@ -84,9 +84,9 @@ void playOne(int **old, int **new, int rows, int columns) {
  */
 int checkAllDead(int **arr, int rows, int columns) {
 
-	for (int row = 1; row < rows + 1; row++) {
-		for (int column = 1; column < columns + 1; column++) {
-			if (arr[row][column] == 1)
+	for (int row = 0; row < rows; row++) {
+		for (int column = 0; column < columns; column++) {
+			if (arr[row+1][column+1] == 1)
 				return 0;
 		}
 	}

@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "life.h"
 #include "twoD.h"
 
@@ -26,8 +27,8 @@ int main(int argc, char **argv) {
 	int boardSizeRows; // Number of rows on board (includes walls)
 	int boardSizeColumns; // Number of columns on board (includes walls)
 	int gens; // Number of generations to produce
-	int doPrint; // 1 if user wants to print each generation, 0 if not
-	int doPause; // 1 if user wants to pause after each generation, 0 if not
+	int doPrint = 0; // 1 if user wants to print each generation, 0 if not
+	int doPause = 0; // 1 if user wants to pause after each generation, 0 if not
 	int **new; // A 2D array to hold the pattern
 	int **old; // A 2D array to hold the pattern
 	int **superOld; // A 2D array to hold the pattern
@@ -43,11 +44,23 @@ int main(int argc, char **argv) {
 	// Save command line arguments
 	switch (argc) {
 	case 7:
-		doPause = atoi(argv[6]); // Convert from character string to integer. // Should be n if no print or left out
+		if (strcmp(argv[6], "y") == 0) {
+			doPause = 1;
+		} else {
+			doPause = 0;
+		}
+		//doPause = atoi(argv[6]); // Convert from character string to integer. // Should be n if no print or left out
+		//doPrint = atoi(argv[5]); // should be n if left out
 	case 6:
-		doPrint = atoi(argv[5]); // should be n if left out
+		if (strcmp(argv[5], "y") == 0) {
+			doPrint = 1;
+		} else {
+			doPrint = 0;
+			doPause = 0;
+		}
 	case 5:
 	default:
+		//printf("pause: %d, print: %d\n", doPause, doPrint);
 		inputFileName = argv[4];
 		gens = atoi(argv[3]);
 		columns = atoi(argv[2]);
@@ -59,6 +72,11 @@ int main(int argc, char **argv) {
 		break;
 
 	}
+
+	/*if(doPause) {
+	 char *tempChar;
+	 *tempChar = (char *) malloc(sizeof(char *));
+	 }*/
 
 	if (gens <= 0) {
 		printf("Number of generations must be greater than 0");
@@ -93,8 +111,8 @@ int main(int argc, char **argv) {
 
 	int returnVal;
 	returnVal = verifyFileSize(input, rows, columns, maxRow, maxColumn);
-	printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn,
-			returnVal);
+	//printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn,
+	//returnVal);
 	if (returnVal) {
 		printf("File size is larger than grid defined in program arguments");
 		return 1;
@@ -113,8 +131,12 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	returnVal = parseFile(input, new, rowOffset, columnOffset);
-	print2Dint(new, rows, columns);
+	returnVal = parseFile(input, old, rowOffset, columnOffset);
+	if (doPrint) {
+		printf("\nInitial state:\n");
+		print2Dint(old, rows, columns);
+		printf("\n");
+	}
 	//playOne(new, old, rows, columns);
 	//print2Dint(old, boardSizeRows, boardSizeColumns);
 
@@ -123,21 +145,35 @@ int main(int argc, char **argv) {
 	 * You can read from standard input (the keyboard) with getchar().
 	 */
 
-	if (checkAllDead(new, rows, columns)) {
+	if (checkAllDead(old, rows, columns)) {
 		printf("Game ended because all organisms were dead in initial state.");
 		return 1;
 	}
 
 	for (int gen = 1; gen <= gens; gen++) {
 
-		printf("Gen: %d\n", gen);
-		superOld = old;
-		old = new;
-		new = superOld;
+		if (doPause) {
+			fgetc(stdin);
+		}
+
+		printf("Gen %d:\n", gen);
+		/*superOld = old;
+		 old = new;
+		 new = superOld;*/
 
 		playOne(old, new, rows, columns);
 
-		print2Dint(new, rows, columns);
+		/*print2Dint(new, rows, columns);
+		 print2Dint(old, rows, columns);
+		 print2Dint(superOld, rows, columns);*/
+
+		//printf("new, old, superold\n");
+		if (doPrint) {
+			print2Dint(new, rows, columns);
+			printf("\n");
+		}
+		//print2Dint(old, rows, columns);
+		//print2Dint(superOld, rows, columns);
 
 		if (checkAllDead(new, rows, columns)) {
 			printf("Game ended in %d generation(s) because all organisms died.",
@@ -145,6 +181,7 @@ int main(int argc, char **argv) {
 			return 1;
 
 		} else if (!compare2Dint(new, old, rows, columns)) {
+
 			printf(
 					"Game ended in %d generation(s) because it reached a steady state.\n",
 					gen);
@@ -156,6 +193,11 @@ int main(int argc, char **argv) {
 					gen);
 			return 1;
 		}
+
+		superOld = old;
+		old = new;
+		new = superOld;
+
 	}
 
 	printf("Game ended in %d generation(s)\n", gens);

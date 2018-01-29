@@ -88,9 +88,11 @@ int compare2Dint(int **arr1, int **arr2, int rows, int columns) {
 
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
-			if (arr1[row][column] != arr2[row][column]) {
+			if (arr1[row+1][column+1] != arr2[row+1][column+1]) {
 				//printf("Arrays different at [%d, %d]\n", row, column);
+				//printf("%d, %d\n", arr1[row][column], arr2[row][column]);
 				return 1;
+			} else {
 			}
 		}
 		//printf("\n");
@@ -115,11 +117,11 @@ int print2Dint(int **arr, int rows, int columns) {
 
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
-			printf("%d", arr[row][column]); //][%d, %d]", arr[row][column], row, column);
+			printf("%d", arr[row+1][column+1]); //][%d, %d]", arr[row][column], row, column);
 		}
 		printf("\n");
 	}
-	printf("Finished printing\n");
+	//printf("Finished printing\n");
 
 	return 0;
 }
@@ -143,7 +145,7 @@ int initGrid(int **arr, int rows, int columns) {
 			arr[row][column] = 0;
 		}
 	}
-	printf("Finished grid init\n");
+	//printf("Finished grid init\n");
 
 	return 0;
 
