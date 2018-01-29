@@ -1,8 +1,6 @@
 /*
- * life.h
- *
- *  Created on: Jan 27, 2018
- *      Author: isaiah
+ * FILE: life.h
+ * AUTHOR: Isaiah Fleischer
  */
 
 #ifndef LIFE_H_

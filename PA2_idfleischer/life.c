@@ -32,6 +32,8 @@ int main(int argc, char **argv) {
 	int **new; // A 2D array to hold the pattern
 	int **old; // A 2D array to hold the pattern
 	int **superOld; // A 2D array to hold the pattern
+	int *maxRow; // Max row number in file
+	int *maxColumn; // Max column number in file
 
 	// See if there are the right number of arguments on the command line
 	if ((argc < 5) || (argc > 7)) {
@@ -44,27 +46,24 @@ int main(int argc, char **argv) {
 	// Save command line arguments
 	switch (argc) {
 	case 7:
-		if (strcmp(argv[6], "y") == 0) {
+		if (strcmp(argv[6], "y") == 0) { // Check if doPause is "y", if so, set doPause to 1
 			doPause = 1;
-		} else {
+		} else { // All other cases set it to 0
 			doPause = 0;
 		}
-		//doPause = atoi(argv[6]); // Convert from character string to integer. // Should be n if no print or left out
-		//doPrint = atoi(argv[5]); // should be n if left out
 	case 6:
-		if (strcmp(argv[5], "y") == 0) {
+		if (strcmp(argv[5], "y") == 0) { // Check if doPrint is "y", if so, set doPrint to 1
 			doPrint = 1;
-		} else {
+		} else { // All other cases set doPrint to 0 and doPause to 0
 			doPrint = 0;
 			doPause = 0;
 		}
 	case 5:
 	default:
-		//printf("pause: %d, print: %d\n", doPause, doPrint);
-		inputFileName = argv[4];
-		gens = atoi(argv[3]);
-		columns = atoi(argv[2]);
-		rows = atoi(argv[1]);
+		inputFileName = argv[4]; // File name
+		gens = atoi(argv[3]); // Max number of generations to run
+		columns = atoi(argv[2]); // Number of columns on the board
+		rows = atoi(argv[1]); // Number of rows on the board
 
 		// Board size is playable area + walls on either size
 		boardSizeRows = rows + 2;
@@ -72,11 +71,6 @@ int main(int argc, char **argv) {
 		break;
 
 	}
-
-	/*if(doPause) {
-	 char *tempChar;
-	 *tempChar = (char *) malloc(sizeof(char *));
-	 }*/
 
 	if (gens <= 0) {
 		printf("Number of generations must be greater than 0");
@@ -100,27 +94,32 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
+	// Open the file, checking to make sure it succeeded
 	input = fopen(inputFileName, "r");
 	if (!input) {
 		printf("Unable to open input file: %s\n", inputFileName);
 		return EXIT_FAILURE;
 	}
 
-	int *maxRow = (int *) malloc(sizeof(int *));
-	int *maxColumn = (int *) malloc(sizeof(int *));
+	// Allocate memory for maxRow and maxColumn
+	maxRow = (int *) malloc(sizeof(int *));
+	maxColumn = (int *) malloc(sizeof(int *));
 
-	int returnVal;
-	returnVal = verifyFileSize(input, rows, columns, maxRow, maxColumn);
-	//printf("rows: %d, columns: %d, file size fits: %d\n", *maxRow, *maxColumn,
-	//returnVal);
-	if (returnVal) {
+	//int fileSizeReturn;
+
+	// Verify the file's board is smaller or equal in size to the grid defined in the program arguments
+	int fileSizeReturn = verifyFileSize(input, rows, columns, maxRow,
+			maxColumn);
+	if (fileSizeReturn) {
 		printf("File size is larger than grid defined in program arguments");
 		return 1;
 	}
 
+	// Calculate offsets to center the file on the board
 	int rowOffset = (rows - *maxRow) / 2;
 	int columnOffset = (columns - *maxColumn) / 2;
-	//printf("Offsets: %d, %d\n", rowOffset, columnOffset);
+
+	// Initialize all grids to be full of 0's
 	initGrid(new, boardSizeRows, boardSizeColumns);
 	initGrid(old, boardSizeRows, boardSizeColumns);
 	initGrid(superOld, boardSizeRows, boardSizeColumns);
@@ -131,72 +130,74 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	returnVal = parseFile(input, old, rowOffset, columnOffset);
+	// Parse the file, placing data into grid "old"
+	int parseReturn = parseFile(input, old, rowOffset, columnOffset);
+	if (parseReturn) {
+		printf("File parsing failed\n");
+		return 1;
+	}
+
+	// Free memory for maxRow and maxColumn
+	free(maxRow);
+	free(maxColumn);
+
+	// If doPrint, print the initial grid
 	if (doPrint) {
 		printf("\nInitial state:\n");
 		print2Dint(old, rows, columns);
 		printf("\n");
 	}
-	//playOne(new, old, rows, columns);
-	//print2Dint(old, boardSizeRows, boardSizeColumns);
 
-	/*Once opened, you can read from the file one character at a time with fgetc().
-	 * You can read one line at a time using fgets().
-	 * You can read from standard input (the keyboard) with getchar().
-	 */
-
+	// Check if file was all o's
 	if (checkAllDead(old, rows, columns)) {
 		printf("Game ended because all organisms were dead in initial state.");
-		return 1;
+		return 0;
 	}
 
-	printf("new\n");
-	print2Dint(new, rows, columns);
-	printf("old\n");
-	print2Dint(old, rows, columns);
-	printf("superold\n");
-	print2Dint(superOld, rows, columns);
-
+	/* Play through game of life one generation at a time
+	 * LOOP INVARIANT: The generation must always be in the range: 1 to the number of generations defined
+	 * PRE-CONDITION: Starts at generation 1
+	 * POST-CONDITION: Finishes after it's played number of generations specified
+	 */
 	for (int gen = 1; gen <= gens; gen++) {
 
+		// Wait for user input if doPause is enabled
 		if (doPause) {
 			fgetc(stdin);
 		}
 
 		printf("Gen %d:\n", gen);
-		/*superOld = old;
-		 old = new;
-		 new = superOld;*/
 
+		// Play one round of game of life
 		playOne(old, new, rows, columns);
 
-		/*print2Dint(new, rows, columns);
-		 print2Dint(old, rows, columns);
-		 print2Dint(superOld, rows, columns);*/
-
-		//printf("new, old, superold\n");
+		// Print current board if doPrint enabled
 		if (doPrint) {
 			print2Dint(new, rows, columns);
 			printf("\n");
 		}
 
+		// Check if all organisms are dead
 		if (checkAllDead(new, rows, columns)) {
-			printf("Game ended in %d generation(s) because all organisms died.\n",
+			printf(
+					"Game ended in %d generation(s) because all organisms died.\n",
 					gen);
-			return 1;
+			return 0;
 
+			// Check if current and previous generations are the same
 		} else if (!compare2Dint(new, old, rows, columns)) {
 
 			printf(
 					"Game ended in %d generation(s) because it reached a steady state.\n",
 					gen);
-			return 1;
+			return 0;
 
+			// Check if current board is same as the board 2 generations ago
 		} else if (!compare2Dint(new, superOld, rows, columns)) {
 			printf(
 					"Game ended in %d generation(s) because it reached an oscillatory state.\n",
 					gen);
-			return 1;
+			return 0;
 		}
 
 		//Shuffle the pointers so each board gets moved back a stage and "new" gets the oldest board
@@ -207,9 +208,11 @@ int main(int argc, char **argv) {
 		new = tempArr;
 	}
 
+	// Max number of generations reached
 	printf("Game ended in %d generation(s)\n", gens);
-	return 1;
+	return 0;
 
+	// Free memory allocated to grids
 	free(new);
 	free(old);
 	free(superOld);

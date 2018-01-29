@@ -1,3 +1,10 @@
+/*
+ * FILE: twoD.c
+ * WRITTEN BY: Mike Ciaraldi
+ * MODIFIED BY: Isaiah Fleischer
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "twoD.h"
@@ -77,25 +84,30 @@ char** make2Dchar(int rows, int columns) {
  */
 int compare2Dint(int **arr1, int **arr2, int rows, int columns) {
 
+	// Verify both pointers
 	if (!arr1) {
 		printf("Invalid pointer to first array");
-		return 1;
+		return 2;
 	}
 	if (!arr2) {
 		printf("Invalid pointer to second array");
-		return 1;
+		return 2;
 	}
 
+	/* Loop through playable rows and columns, checking if corresponding cells are equal
+	 * LOOP INVARIANT: Cell must be in playable area
+	 * PRE-CONDITION: Starts at top left
+	 * POST-CONDITION: Ends at bottom right
+	 */
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
+			// Add 1 to the indices to only check playable area
 			if (arr1[row+1][column+1] != arr2[row+1][column+1]) {
-				//printf("Arrays different at [%d, %d]\n", row, column);
-				//printf("%d, %d\n", arr1[row][column], arr2[row][column]);
+				// If any two cells are not identical return 1
 				return 1;
 			} else {
 			}
 		}
-		//printf("\n");
 	}
 
 	return 0;
@@ -110,11 +122,17 @@ int compare2Dint(int **arr1, int **arr2, int rows, int columns) {
  */
 int print2Dint(int **arr, int rows, int columns) {
 
+	// Verify valid pointer
 	if (!arr) {
 		printf("Invalid pointer to array for printing");
 		return 1;
 	}
 
+	/* Loop through playable rows and columns, printing each cell
+	 * LOOP INVARIANT: Cell must be in playable area
+	 * PRE-CONDITION: Starts at top left
+	 * POST-CONDITION: Ends at bottom right
+	 */
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
 			printf("%d", arr[row+1][column+1]); //][%d, %d]", arr[row][column], row, column);
@@ -135,17 +153,22 @@ int print2Dint(int **arr, int rows, int columns) {
  */
 int initGrid(int **arr, int rows, int columns) {
 
+	// Verify valid pointer
 	if (!arr) {
 		printf("Invalid pointer to array for printing");
 		return 1;
 	}
 
+	/* Loop through all rows and columns, setting them all to 0
+	 * LOOP INVARIANT: Cell must be within grid
+	 * PRE-CONDITION: Starts at [0][0]
+	 * POST-CONDITION: Ends at [rows][columns]
+	 */
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
 			arr[row][column] = 0;
 		}
 	}
-	//printf("Finished grid init\n");
 
 	return 0;
 

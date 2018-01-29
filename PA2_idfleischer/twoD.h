@@ -1,7 +1,7 @@
-/**
- * twoD.h
- *
- * @author: Mike Ciaraldi
+/*
+ * FILE: twoD.h
+ * WRITTEN BY: Mike Ciaraldi
+ * MODIFIED BY: Isaiah Fleischer
  */
 
 #ifndef TWOD_H_
