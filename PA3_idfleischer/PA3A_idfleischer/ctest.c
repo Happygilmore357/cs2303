@@ -8,6 +8,7 @@
  * dynamically-allocated memory.
  * @author Mike Ciaraldi
  * Add your own @author line below.
+ * @author Isaiah Fleischer
  */
 
 const int MAX_CHARS = 20; // Maximum number of characters in array

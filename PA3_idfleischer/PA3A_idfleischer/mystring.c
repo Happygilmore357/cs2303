@@ -27,3 +27,11 @@ char* mystrdup1(const char* src) {
   strcpy(newstr, src);
   return newstr;
 }
+
+
+/**
+ *
+ */
+size_t mystrlen1(const char *s) {
+
+}
