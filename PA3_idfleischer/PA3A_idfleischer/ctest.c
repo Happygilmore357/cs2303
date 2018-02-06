@@ -57,14 +57,26 @@ int main()
 	printf("Duplicated string: \n");
 	printf("Pointer p2 = %p, contents = %s\n", p2, p2);
 
+	// Duplicate a string, using my function, then print
+	printf("\nBefore calling mystrdup2(), pointer a2 = %p, contents = %s\n", a2, a2);
+	p2 = mystrdup2(a2);
+	printf("Duplicated string: \n");
+	printf("Pointer p2 = %p, contents = %s\n", p2, p2);
 
 	// Be sure there is a terminator character in the last element of the array
 	a1[MAX_CHARS] = '\0';
 
+	// Copy a string using my function then print it
+	char* string1 = "Hello"; // String to be copied
+	char string2[5]; // Destination string
+
+	printf("\nPointer to original: %p   Pointer to copied:%p\n", string1, mystrcpy(string2, string1));
+	printf("Original string: %s   Copied string: %s\n", string1, string2);
+
 	// Concatenate two character arrays, then print.
 	strcpy(a1, p3); // Reset character array
 	strcat(a1, a2);
-	printf("Using strcat() to concatenate a2 to the end of a1\n");
+	printf("\nUsing strcat() to concatenate a2 to the end of a1\n");
 	printf("a1 = %s\n", a1);
 
 	// Concatenate two character arrays safely, then print.
