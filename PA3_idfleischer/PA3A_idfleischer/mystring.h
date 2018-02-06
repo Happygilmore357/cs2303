@@ -7,3 +7,5 @@
 char* mystrdup1(const char* src);
 
 size_t mystrlen1(const char *s);
+size_t mystrlen2(const char *s);
+

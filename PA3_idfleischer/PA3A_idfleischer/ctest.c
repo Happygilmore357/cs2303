@@ -42,7 +42,8 @@ int main()
 	// Note that strlen() returns size_t, which is typedef'd to
 	//   unsigned long, so we need to print it with %ld instead of just %d.
 	printf("For string /%s/, strlen() returns %ld\n", p1, strlen(p1));
-	//printf("For string /%s/, mystrlen1() returns %ld\n", p1, mystrlen1(p1));
+	printf("For string /%s/, mystrlen1() returns %ld\n", p1, mystrlen1(p1));
+	printf("For string /%s/, mystrlen2() returns %ld\n", p1, mystrlen2(p1));
 
 	// Duplicate a string, using strdup(), then print
 	printf("\nBefore calling strdup(), pointer a2 = %p, contents = %s\n", a2, a2);

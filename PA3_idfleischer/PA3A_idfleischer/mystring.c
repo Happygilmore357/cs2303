@@ -17,7 +17,7 @@ char* mystrdup1(const char* src) {
   int length; // Length of the source string
   char* newstr; // Pointer to memory which will hold new string
 
-  length = strlen(src) + 1;  // Leave space for the terminator
+  length = mystrlen1(src) + 1;  // Leave space for the terminator
   newstr = (char*) malloc(length); // Must cast!
 
   // If no memory was available, return null pointer immediately
@@ -29,9 +29,34 @@ char* mystrdup1(const char* src) {
 }
 
 
-/**
+/** Function to determine length of string
  *
+ * @param *s pointer to string
+ *
+ * @return Number of bytes in input string
  */
 size_t mystrlen1(const char *s) {
 
+	int i = 0;
+
+	while(s[i] != '\0') i++;
+
+	return i*sizeof(char);
+}
+
+
+
+/** Function to determine length of string
+ *
+ * @param *s pointer to string
+ *
+ * @return Number of bytes in input string
+ */
+size_t mystrlen2(const char *s) {
+
+	int i = 0;
+
+	while(*s != '\0') {i++; s++;}
+
+	return i*sizeof(char);
 }
