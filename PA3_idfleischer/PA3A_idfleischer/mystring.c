@@ -108,7 +108,7 @@ char* mystrcpy(char* dest, const char* src) {
 	 * Increment src and destIndex pointers each iteration
 	 * src must point to within the string or the null terminator (length+1)
 	 */
-	for (int i = 0; i <= srcLength; i++) {
+	for(int i = 0; i <= srcLength; i++) {
 		*destIndex = *src;
 		destIndex++;
 		src++;
@@ -116,3 +116,55 @@ char* mystrcpy(char* dest, const char* src) {
 
 	return dest;
 }
+
+
+/** Appends src string to dest string.
+ * Overwrites null terminator in dest string, and adds null terminator to final string.
+ * Does not check for enough space in dest string, so may cause buffer overruns.
+ *
+ * @param dest Pointer to destination string
+ * @param src Pointer to source string
+ * @return Pointer to destination string
+ */
+char *mystrcat(char *dest, const char *src) {
+
+	char* destIndex = dest; // Use this to place chars in dest
+
+	while(*destIndex != '\0') destIndex++;
+
+	int srcLength = mystrlen2(src);
+
+	for(int i = 0; i < srcLength; i++, src++, destIndex++) {
+		*destIndex = *src;
+		//src++; destIndex++;
+	}
+
+	*destIndex = '\0';
+
+	return dest;
+}
+
+/** Adds a maximum of n chars from string in src to string at dest.
+ * Overwrites null terminator, and adds null terminator at the end of final string.
+ * Dest must have at least n+1 chars free to ensure no buffer overruns.
+ * If src < n: Adds all of src to dest then the null terminator.
+ * If src == n: Adds all of src to dest then the null terminator.
+ * If src > n: Adds first n chars of src to dest then the null terminator.
+ *
+ * @param dest Pointer to destination string
+ * @param src Pointer to source string
+ * @return Pointer to destination string
+ */
+char * mystrncat(char *dest, const char *src, size_t n)
+{
+
+    char* destIndex = dest + mystrlen2(dest); // Use this to place chars in dest
+
+    for (int i = 0 ; i < n && *src != '\0' ; i++, src++, destIndex++)
+        *destIndex = *src;
+
+    *destIndex = '\0';
+
+    return dest;
+}
+

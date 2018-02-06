@@ -79,13 +79,28 @@ int main()
 	printf("\nUsing strcat() to concatenate a2 to the end of a1\n");
 	printf("a1 = %s\n", a1);
 
+	// Concatenate two character arrays using mystrcat(), then print.
+	mystrcpy(a1, p3); // Reset character array
+	mystrcat(a1, a2);
+	printf("\nUsing mystrcat() to concatenate a2 to the end of a1\n");
+	printf("a1 = %s\n", a1);
+
 	// Concatenate two character arrays safely, then print.
 	strcpy(a1, p3); // Reset character array
 	a1[MAX_CHARS] = 'A'; // Remove terminator, to prove strncat() puts it back in.
 	copy_limit = MAX_CHARS - strlen(a1); // How much space is left?
-	printf("Using strncat() to concatenate to the end of a1, with copy_limit = %d\n",
+	printf("\nUsing strncat() to concatenate to the end of a1, with copy_limit = %d\n",
 			copy_limit);
 	if (copy_limit > 0) strncat(a1, a3, copy_limit);
+	printf("a1 = %s\n", a1);
+
+	// Concatenate two character arrays safely using mystrncat(), then print.
+	mystrcpy(a1, p3); // Reset character array
+	a1[MAX_CHARS] = 'A'; // Remove terminator, to prove strncat() puts it back in.
+	copy_limit = MAX_CHARS - mystrlen2(a1); // How much space is left?
+	printf("\nUsing mystrncat() to concatenate to the end of a1, with copy_limit = %d\n",
+			copy_limit);
+	if (copy_limit > 0) mystrncat(a1, a3, copy_limit);
 	printf("a1 = %s\n", a1);
 
 	return 0;
