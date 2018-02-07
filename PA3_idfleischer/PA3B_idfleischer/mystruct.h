@@ -16,4 +16,12 @@ struct Employee {
 
 // Function prototype(s):
 struct Employee *makeEmployee(int birth, int start, const char* name);
+struct Employee *makeRandEmployee(void);
+
 void printEmployee(struct Employee *e);
+
+int randInt(int max);
+char randChar(void);
+char* randString(int length);
+
+

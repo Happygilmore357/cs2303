@@ -23,4 +23,5 @@ To run from the command line:
 
 To run from Eclipse:
 
-Press the green play button, this will build the code and run ./ctest
+-Press the hammer or right click on the project and select "Build project" to build the project
+-Press the green play button to run make and then the program

@@ -1,12 +1,24 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "mystruct.h"
 
 int main(int atgc, char *argv[]) {
-	struct Employee *e;
+
+	srand(time(0));
+
+	struct Employee *e, *i, *j;
 
 	e = makeEmployee(1952, 1999, "Mike Ciaraldi");
+	i = makeEmployee(1999, 2016, "Isaiah Fleischer");
+	j = makeRandEmployee();
 
 	printEmployee(e);
+	printEmployee(i);
+	printEmployee(j);
 
+	//printf("%c\n", randChar());
+
+	//printf("%s\n", randString(10));
 	return 0;
 }
