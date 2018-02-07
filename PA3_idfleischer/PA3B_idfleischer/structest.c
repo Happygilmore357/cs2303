@@ -8,6 +8,7 @@ int main(int atgc, char *argv[]) {
 	srand(time(0));
 
 	struct Employee *e, *i, *j;
+	struct Employee** k;
 
 	e = makeEmployee(1952, 1999, "Mike Ciaraldi");
 	i = makeEmployee(1999, 2016, "Isaiah Fleischer");
@@ -16,6 +17,9 @@ int main(int atgc, char *argv[]) {
 	printEmployee(e);
 	printEmployee(i);
 	printEmployee(j);
+
+	k = makeMultEmployees(10);
+	printMultEmployees(k, 10);
 
 	//printf("%c\n", randChar());
 

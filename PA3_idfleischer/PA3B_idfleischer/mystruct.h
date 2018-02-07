@@ -17,8 +17,15 @@ struct Employee {
 // Function prototype(s):
 struct Employee *makeEmployee(int birth, int start, const char* name);
 struct Employee *makeRandEmployee(void);
+struct Employee **makeMultEmployees(int count);
 
-void printEmployee(struct Employee *e);
+struct Employee **dupEmployees(struct Employee** src, int count);
+struct Employee **dupEmployeesDeep(struct Employee** src, int count);
+
+int freeStructs(struct Employee** e, int count);
+
+int printEmployee(struct Employee *e);
+int printMultEmployees(struct Employee** e, int count);
 
 int randInt(int max);
 char randChar(void);

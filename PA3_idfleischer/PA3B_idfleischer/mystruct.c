@@ -25,18 +25,6 @@ struct Employee* makeEmployee(int birth, int start, const char *name) {
 }
 
 
-/** Prints the contents of Employee struct
- * @param e Pointer to Employee struct
- * @return void
- */
-void printEmployee(struct Employee *e) {
-
-	printf("Birth year: %d\n", e->birth_year);
-	printf("Start year: %d\n", e->start_year);
-	printf("Employee name: %s\n", e->name);
-}
-
-
 /** Make an Employee struct with random data
  * @return Pointer to struct
  */
@@ -60,15 +48,56 @@ struct Employee* makeRandEmployee(void) {
  */
 struct Employee** makeMultEmployees(int count) {
 
-	struct Employee* e[] = malloc(size_t * count);
+	struct Employee** e = malloc(sizeof(struct Employee*) * count); // Allocate an array for the pointers
 
+	/* Iterate through array, generating pointer to random Employee for each element
+	 * e[i] must be a valid pointer to an Employee struct because it is within the bounds of the array
+	 */
 	for(int i = 0; i < count; i++) {
-		e[i] =
+		e[i] = makeRandEmployee();
 	}
 
-
-	return e;
+	return e; // Return array of pointers
 }
+
+
+
+//struct Employee **dupEmployees(struct Employee** src, int count);
+//struct Employee **dupEmployeesDeep(struct Employee** src, int count);
+
+//int freeStructs(struct Employee** e, int count);
+
+
+/** Prints the contents of Employee struct
+ * @param e Pointer to Employee struct
+ * @return 0 if successful
+ */
+int printEmployee(struct Employee *e) {
+
+	printf("Birth year: %d\n", e->birth_year);
+	printf("Start year: %d\n", e->start_year);
+	printf("Employee name: %s\n", e->name);
+
+	return 0;
+}
+
+
+/** Print each employee in an array of pointers to employee structs
+ * @param e Array of pointers to Employee structs
+ * @param count Number of employees in e
+ * @return 0 if successful
+ */
+int printMultEmployees(struct Employee** e, int count) {
+
+	/* Iterate through employees array, printing each employee
+	 * e[i] must be a valid pointer to an Employee struct because it is within the bounds of the array
+	 */
+	for(int i = 0; i < count; i++)
+		printEmployee(e[i]);
+
+	return 0;
+}
+
 
 /** Generate a random int with a maximum bound
  * @param max Max int to generate
