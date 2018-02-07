@@ -52,6 +52,7 @@ struct Employee** makeMultEmployees(int count) {
 
 	/* Iterate through array, generating pointer to random Employee for each element
 	 * e[i] must be a valid pointer to an Employee struct because it is within the bounds of the array
+	 * Increments index in array by 1 each loop
 	 */
 	for(int i = 0; i < count; i++) {
 		e[i] = makeRandEmployee();
@@ -61,11 +62,70 @@ struct Employee** makeMultEmployees(int count) {
 }
 
 
+/** Duplicate array of pointers to Employee structs
+ * @param src Pointer to array of pointers
+ * @param count Number of pointers in the array
+ * @return Pointer to duplicate array of pointers
+ */
+struct Employee **dupEmployees(struct Employee** src, int count) {
 
-//struct Employee **dupEmployees(struct Employee** src, int count);
-//struct Employee **dupEmployeesDeep(struct Employee** src, int count);
+	struct Employee** dest = malloc(sizeof(struct Employee*) * count); // Allocate an array for the pointers
 
-//int freeStructs(struct Employee** e, int count);
+	/* Iterate through array, setting corresponding pointer in src to pointer in dest
+	 * src[i] must be a valid pointer to an Employee struct because it is within the bounds of the array
+	 * Increments index in array by 1 each loop
+	 */
+	for(int i = 0; i < count; i++) {
+		dest[i] = src[i];
+	}
+
+	return dest; // Return array of pointers
+}
+
+
+/** Makes a deep copy of an array of pointers to Employee structs
+ * @param src Pointer to array of pointers
+ * @param count Number of Employee struct pointers in the array
+ * @return Pointer to new array of pointers of copied Employee structs
+ */
+struct Employee **dupEmployeesDeep(struct Employee** src, int count) {
+
+	struct Employee** dest = malloc(sizeof(struct Employee*) * count); // Allocate an array for the pointers
+
+	for(int i = 0; i < count; i++) {
+		struct Employee*  srcEmployee = src[i];
+
+		int tempBirth = srcEmployee->birth_year;
+		int tempStart = srcEmployee->start_year;
+		char* tempName = srcEmployee->name;
+
+		struct Employee* tempEmployee = makeEmployee(tempBirth, tempStart, tempName);
+
+		dest[i] = tempEmployee;
+	}
+
+	return dest; // Return array of pointers to new Employee structs
+}
+
+
+/** Frees the memory for all of the Employee structs being pointed to by an array of pointers
+ * @param e Array of pointers to structs
+ * @param count Number of pointers in the array
+ * @return 0 if successful
+ */
+int freeStructs(struct Employee** e, int count) {
+
+	/* Iterate through array, freeing each struct
+	 * e[i] must be a valid pointer to an Employee struct because it is within the bounds of the array
+	 * Increments index in array by 1 each loop
+	 */
+	for(int i = 0; i < count; i++) {
+		free(e[i]); // Free Employee struct pointed to by e[i]
+		//free(e[i]);
+	}
+
+	return 0;
+}
 
 
 /** Prints the contents of Employee struct
@@ -74,9 +134,9 @@ struct Employee** makeMultEmployees(int count) {
  */
 int printEmployee(struct Employee *e) {
 
-	printf("Birth year: %d\n", e->birth_year);
-	printf("Start year: %d\n", e->start_year);
-	printf("Employee name: %s\n", e->name);
+	printf("\nBirth year: %d\n", e->birth_year); // Print birth year
+	printf("Start year: %d\n", e->start_year); // Print start year
+	printf("Employee name: %s\n", e->name); // Pritn name
 
 	return 0;
 }
